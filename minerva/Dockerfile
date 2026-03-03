@@ -2,7 +2,7 @@ FROM python:trixie
 
 WORKDIR /minerva
 
+RUN apt install -y aria2
 RUN pip install httpx rich click
-RUN wget https://minerva-archive.org/worker/download
 
-CMD python minerva.py login && python minerva.py run
+CMD python minerva.py run

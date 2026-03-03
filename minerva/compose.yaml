@@ -1,0 +1,9 @@
+services:
+  minerva:
+    build: https://github.com/Momi-V/Compose-Files.git#main:/minerva
+    container_name: minerva
+    environment:
+      - TZ=Europe/Berlin
+    restart: unless-stopped
+    volumes:
+      - /mnt/bigSpin/net/media/minerva:/minerva

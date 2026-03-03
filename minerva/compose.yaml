@@ -6,4 +6,4 @@ services:
       - TZ=Europe/Berlin
     restart: unless-stopped
     volumes:
-      - /mnt/bigSpin/net/media/minerva:/minerva/.minerva-dpn
+      - /mnt/bigSpin/net/media/minerva:/root/.minerva-dpn

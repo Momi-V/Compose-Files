@@ -1,8 +1,8 @@
-FROM python:trixie
+FROM debian:trixie
 
 WORKDIR /root
 
-RUN apt update && apt install -y aria2
+RUN apt update && apt install -y python3 aria2
 RUN pip install httpx rich click
 RUN wget -O minerva.py https://minerva-archive.org/worker/download
 

@@ -1,5 +1,6 @@
 FROM debian:latest
 
+USER root
 WORKDIR /root
 
 RUN apt update && apt install -y python3 aria2

@@ -1,4 +1,4 @@
-FROM debian:trixie
+FROM debian:latest
 
 WORKDIR /root
 

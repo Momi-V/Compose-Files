@@ -5,5 +5,7 @@ services:
     environment:
       - TZ=Europe/Berlin
     restart: unless-stopped
+    stdin_open: True
+    tty: True
     volumes:
       - /mnt/bigSpin/net/media/minerva:/root/.minerva-dpn

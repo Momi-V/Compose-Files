@@ -1,9 +1,9 @@
-FROM debian:latest
+FROM python:trixie
 
 USER root
 WORKDIR /root
 
-RUN apt update && apt install -y wget python3 python3-httpx python3-rich python3-click aria2
-RUN wget -O minerva.py https://minerva-archive.org/worker/download
+RUN apt update && apt install -y aria2
+RUN pip install minerva-worker
 
-CMD [ "python3", "minerva.py", "run", "-c 25", "--keep-files" ]
+CMD [ "python", "minerva.py", "run", "-c 25", "--keep-files" ]

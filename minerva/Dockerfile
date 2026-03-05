@@ -4,6 +4,7 @@ USER root
 WORKDIR /root
 
 RUN apt update && apt install -y aria2
-RUN pip install minerva-worker
+RUN pip install httpx rich click
+RUN wget -O minerva.py https://minerva-archive.org/worker/download
 
-CMD [ "minerva", "run", "-c 25", "--keep-files" ]
+CMD [ "python" "minerva.py", "run", "-c 25", "--keep-files" ]

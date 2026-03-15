@@ -1,4 +1,4 @@
-x-restart-policy: &restart-policy "no"
+x-restart-policy: &restart-policy "unless-stopped"
 services:
   dns:
     image: lancachenet/lancache-dns:latest
@@ -7,6 +7,9 @@ services:
     ports:
       - ${DNS_BIND_IP}:53:53/udp
       - ${DNS_BIND_IP}:53:53/tcp
+    networks:
+      myvlan:
+        ipv4_address: ${DNS_BIND_IP}
 
 ## HTTPS requests are now handled in monolithic directly
 ## you could choose to return to sniproxy if desired
@@ -23,8 +26,22 @@ services:
     env_file: .env
     restart: *restart-policy
     ports:
-      - 80:80/tcp
-      - 443:443/tcp
+      - ${LANCACHE_IP}:80:80/tcp
+      - ${LANCACHE_IP}:443:443/tcp
+    networks:
+      myvlan:
+        ipv4_address: ${LANCACHE_IP}
     volumes:
       - ${CACHE_ROOT}/cache:/data/cache
       - ${CACHE_ROOT}/logs:/data/logs
+
+networks:
+  myvlan:
+    driver: macvlan
+    driver_opts:
+      parent: br0
+    ipam:
+      config:
+        - subnet: "10.11.1.0/24"
+          ip_range: "10.11.1.0/27"
+          gateway: "10.11.1.1"

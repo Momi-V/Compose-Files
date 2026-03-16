@@ -1,39 +1,27 @@
-x-restart-policy: &restart-policy "unless-stopped"
 services:
   dns:
+    env_file: /mnt/bigSpin/net/Games/LAN-cache/.env
     image: lancachenet/lancache-dns:latest
-    env_file: /mnt/bigSpin/net/Games/LAN-cache/.env
-    restart: *restart-policy
-    ports:
-      - ${DNS_BIND_IP}:53:53/udp
-      - ${DNS_BIND_IP}:53:53/tcp
     networks:
       myvlan:
-        ipv4_address: ${DNS_BIND_IP}
-
-## HTTPS requests are now handled in monolithic directly
-## you could choose to return to sniproxy if desired
-#
-#  sniproxy:
-#    image: lancachenet/sniproxy:latest
-#    env_file: .env
-#    restart: *restart-policy
-#    ports:
-#      - 443:443/tcp
-
+        ipv4_address: 10.11.1.17
+    ports:
+      - 53:53/udp
+      - 53:53/tcp
+    restart: unless-stopped
   monolithic:
-    image: lancachenet/monolithic:latest
     env_file: /mnt/bigSpin/net/Games/LAN-cache/.env
-    restart: *restart-policy
-    ports:
-      - ${LANCACHE_IP}:80:80/tcp
-      - ${LANCACHE_IP}:443:443/tcp
+    image: lancachenet/monolithic:latest
     networks:
       myvlan:
-        ipv4_address: ${LANCACHE_IP}
+        ipv4_address: 10.11.1.18
+    ports:
+      - 80:80/tcp
+      - 443:443/tcp
+    restart: unless-stopped
     volumes:
-      - ${CACHE_ROOT}/cache:/data/cache
-      - ${CACHE_ROOT}/logs:/data/logs
+      - /mnt/bigSpin/net/Games/LAN-cache/cache:/data/cache
+      - /mnt/bigSpin/net/Games/LAN-cache/logs:/data/logs
 
 networks:
   myvlan:
@@ -42,6 +30,6 @@ networks:
       parent: br0
     ipam:
       config:
-        - subnet: "10.11.1.0/24"
-          ip_range: "10.11.1.0/27"
-          gateway: "10.11.1.1"
+        - gateway: 10.11.1.1
+          ip_range: 10.11.1.16/28
+          subnet: 10.11.1.0/24

@@ -15,13 +15,14 @@ services:
     networks:
       myvlan:
         ipv4_address: 10.11.1.18
+        mac_address: d8:de:ce:c7:f0:5c
     ports:
       - 80:80/tcp
       - 443:443/tcp
     restart: unless-stopped
     volumes:
-      - /mnt/bigSpin/net/Games/LAN-cache/cache:/data/cache
-      - /mnt/bigSpin/net/Games/LAN-cache/logs:/data/logs
+      - /mnt/bigSpin/LAN-cache/cache:/data/cache
+      - /mnt/bigSpin/LAN-cache/logs:/data/logs
 
 networks:
   myvlan:

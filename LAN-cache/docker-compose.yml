@@ -1,14 +1,21 @@
 services:
-  dns:
+  dns-server:
+    container_name: dns-server
     env_file: /mnt/bigSpin/net/Games/LAN-cache/.env
-    image: lancachenet/lancache-dns:latest
-    networks:
-      myvlan:
-        ipv4_address: 10.11.1.17
+    environment:
+      - DNS_SERVER_DOMAIN=dns-server.lan
+      - DNS_SERVER_FORWARDERS=10.11.1.1
+    hostname: dns-server
+    image: technitium/dns-server:latest
     ports:
+      - 5380:5380/tcp
+      - 53443:53443/tcp
       - 53:53/udp
       - 53:53/tcp
-    restart: unless-stopped
+      - 853:853/udp
+      - 853:853/tcp
+    volumes:
+      - config:/etc/dns
   monolithic:
     env_file: /mnt/bigSpin/net/Games/LAN-cache/.env
     image: lancachenet/monolithic:latest
@@ -24,6 +31,9 @@ services:
       - /mnt/bigSpin/LAN-cache/cache:/data/cache
       - /mnt/bigSpin/LAN-cache/logs:/data/logs
 
+volumes:
+  config:
+
 networks:
   myvlan:
     driver: macvlan
@@ -32,5 +42,5 @@ networks:
     ipam:
       config:
         - gateway: 10.11.1.1
-          ip_range: 10.11.1.16/28
+          ip_range: 10.11.1.16/29
           subnet: 10.11.1.0/24

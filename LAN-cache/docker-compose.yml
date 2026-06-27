@@ -1,7 +1,7 @@
 services:
   dns-server:
     container_name: dns-server
-    env_file: /mnt/bigSpin/net/Games/LAN-cache/.env
+    env_file: .env
     environment:
       - DNS_SERVER_DOMAIN=dns-server.lan
       - DNS_SERVER_FORWARDERS=10.11.1.1
@@ -17,8 +17,9 @@ services:
     restart: unless-stopped
     volumes:
       - config:/etc/dns
+
   monolithic:
-    env_file: /mnt/bigSpin/net/Games/LAN-cache/.env
+    env_file: .env
     image: lancachenet/monolithic:latest
     networks:
       myvlan:

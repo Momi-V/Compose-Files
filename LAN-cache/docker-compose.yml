@@ -21,6 +21,8 @@ services:
   monolithic:
     env_file: .env
     image: lancachenet/monolithic:latest
+    cap_add:
+      - NET_ADMIN
     networks:
       myvlan:
         ipv4_address: 10.11.1.17
@@ -40,7 +42,7 @@ networks:
   myvlan:
     driver: macvlan
     driver_opts:
-      parent: br0
+      parent: enp65s0
     ipam:
       config:
         - gateway: 10.11.1.1

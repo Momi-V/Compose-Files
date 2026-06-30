@@ -1,6 +1,6 @@
 services:
   novnc:
-    build: https://github.com/Momi-V/Notizen.git#main:/novnc
+    build: https://github.com/Momi-V/Compose-Files.git#main:novnc
     container_name: novnc-01
     ports:
       - 6080:6080

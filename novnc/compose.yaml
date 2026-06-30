@@ -6,5 +6,5 @@ services:
       - 6080:6080
     environment:
       - SERVER=localhost:5900
-      - TZ=ETC/UTC
+      - TZ=Europe/Berlin
     restart: unless-stopped

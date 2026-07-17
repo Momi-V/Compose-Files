@@ -1,7 +1,8 @@
-FROM debian:latest
+FROM debian:stable-slim
 
 USER 0:0
 RUN apt update && apt install -y ca-certificates nextcloud-desktop-cmd
+RUN apt clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /
 ADD ./sync.bash /sync.bash

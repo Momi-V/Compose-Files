@@ -1,0 +1,9 @@
+--- a/app/styles/base.css
++++ b/app/styles/base.css
+@@ -481,5 +481,5 @@
+ .noVNC_panel input:not([type=checkbox]):not([type=radio]) {
+     margin-left: 6px;
+     /* Prevent inputs in panels from being too wide */
+-    max-width: calc(100% - 6px - var(--input-xpadding) * 2);
++    /* max-width: calc(100% - 6px - var(--input-xpadding) * 2); */
+ }

@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-RUN apk add novnc
+RUN apk add novnc patch
 ENV SERVER=localhost:5900
 
 WORKDIR /usr/share/novnc

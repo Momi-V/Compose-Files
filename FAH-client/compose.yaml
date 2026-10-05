@@ -1,0 +1,12 @@
+services:
+  fah-rocm:
+    build:
+      context: ./
+    container_name: fah-container
+    network_mode: host
+    volumes:
+      - ./:/home/ubuntu/FAH
+      - /etc/machine-id:/etc/machine-id
+    devices:
+      - /dev/dri
+      - /dev/kfd

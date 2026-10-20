@@ -12,11 +12,11 @@ services:
     environment:
       # To prevent slowdown on systems without ReBAR
       - GGML_VK_DISABLE_HOST_VISIBLE_VIDMEM=1
-      # Disable cloud features if you want local-only
-      - OLLAMA_NO_CLOUD=1
       # KV Cache
-      - OLLAMA_FLASH_ATTENTION=1
-      - OLLAMA_KV_CACHE_TYPE=q8_0
+      # - OLLAMA_FLASH_ATTENTION=1
+      # - OLLAMA_KV_CACHE_TYPE=q8_0
+    networks:
+      - openwebui
 
   open-webui:
     image: ghcr.io/open-webui/open-webui:latest
@@ -24,6 +24,7 @@ services:
     restart: unless-stopped
     depends_on:
       - ollama
+      - terminals
     ports:
       - "3000:8080"
     environment:
@@ -31,15 +32,28 @@ services:
       - WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY}
     volumes:
       - /mnt/goFlash/docker/ollama/open-webui:/app/backend/data
+    networks:
+      - openwebui
 
-  open-terminal:
-    image: ghcr.io/open-webui/open-terminal:latest
-    container_name: open-terminal
+  terminals:
+    image: ghcr.io/open-webui/terminals:latest
+    container_name: terminals
     restart: unless-stopped
-    depends_on:
-      - ollama
-      - open-webui
     environment:
-      - OPEN_TERMINAL_API_KEY=${OPEN_TERMINAL_API_KEY}
+      - TERMINALS_BACKEND=docker
+      - TERMINALS_API_KEY=${TERMINALS_API_KEY}
+      - TERMINALS_DOCKER_NETWORK=openwebui
+      - TERMINALS_DATABASE_URL=sqlite+aiosqlite:////app/data/terminals.db
+      - TERMINALS_DOCKER_DATA_DIR=/mnt/goFlash/docker/ollama/terminals-data/terminals
     volumes:
-      - /mnt/goFlash/docker/ollama/open-terminal:/home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /mnt/goFlash/docker/ollama/terminals-data:/app/data
+    networks:
+      - openwebui
+    # Optional: expose the built-in admin UI (terminal status, sessions, policies)
+    ports:
+      - "3001:3000"
+
+networks:
+  openwebui:
+    name: openwebui

@@ -6,7 +6,7 @@ services:
     ports:
       - "11434:11434"
     volumes:
-      - /mnt/bigSpin/net/Desktop/ollama:/root/.ollama
+      - /mnt/bigSpin/net/Desktop/ollama-local:/root/.ollama
     devices:
       - "/dev/dri:/dev/dri"
     environment:

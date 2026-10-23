@@ -8,12 +8,14 @@ services:
     volumes:
       - /mnt/bigSpin/net/Desktop/ollama:/root/.ollama
     devices:
-      - "/dev/dri:/dev/dri"   # Vulkan device access (Intel/AMD)
+      - "/dev/dri:/dev/dri"
     environment:
       # To prevent slowdown on systems without ReBAR
       - GGML_VK_DISABLE_HOST_VISIBLE_VIDMEM=1
-      # KV Cache
-      # - OLLAMA_FLASH_ATTENTION=1
+      # Improve VRAM usage with large KV
+      - OLLAMA_FLASH_ATTENTION=1
+      - LLAMA_ARG_KV_OFFLOAD=disabled
+      # KV Cache quantization (reduces quality)
       # - OLLAMA_KV_CACHE_TYPE=q8_0
     networks:
       - openwebui
@@ -50,7 +52,6 @@ services:
       - /mnt/goFlash/docker/ollama/terminals-data:/app/data
     networks:
       - openwebui
-    # Optional: expose the built-in admin UI (terminal status, sessions, policies)
     ports:
       - "3001:3000"
 

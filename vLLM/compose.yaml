@@ -1,0 +1,36 @@
+services:
+  vllm:
+    image: vllm/vllm-openai-rocm:latest
+    container_name: vllm
+    ports:
+      - "8000:8000"
+    group_add:
+      - video
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    ipc: host
+    volumes:
+      - ./huggingface:/root/.cache/huggingface
+    environment:
+      - HF_TOKEN=${HF_TOKEN:-}
+      - FLASH_ATTENTION_TRITON_AMD_ENABLE=TRUE
+    restart: unless-stopped
+    command:
+      - --model
+      - ${MODEL:-Qwen/Qwen3-8B}
+      - --served-model-name
+      - ${MODEL_NAME:-local}
+      - --max-model-len
+      - ${MAX_MODEL_LEN:-32768}
+      - --enforce-eager
+      #- --cpu-offload-gb
+      #- ${CPU_OFFLOAD:-0}
+      - --kv-offloading-size
+      - ${KV_OFFLOAD:-32}
+      - --kv-transfer-config
+      - '{"kv_connector": "OffloadingConnector", "kv_role": "kv_both", "kv_connector_extra_config": {"block_size": 64, "cpu_bytes_to_use": 51539607552}}'

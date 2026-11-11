@@ -1,0 +1,24 @@
+services:
+  nextcloud-aio-mastercontainer:
+    container_name: nextcloud-aio-mastercontainer
+    env_file: .env
+    environment:
+      - APACHE_PORT=11000
+      - NEXTCLOUD_DATADIR=/mnt/bigSpin/net/cloud/data
+      - NEXTCLOUD_UPLOAD_LIMIT=99G
+      - NEXTCLOUD_MEMORY_LIMIT=2048M
+      - BORG_RETENTION_POLICY=--keep-within=7d --keep-weekly=3 --keep-monthly=1
+    image: ghcr.io/nextcloud-releases/all-in-one:latest
+    init: True
+    network_mode: bridge
+    ports:
+      - '8080:8080'
+    restart: always
+    devices:
+      - /dev/dri:/dev/dri
+    volumes:
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+volumes:
+  nextcloud_aio_mastercontainer:
+    name: nextcloud_aio_mastercontainer

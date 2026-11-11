@@ -1,0 +1,17 @@
+x-arcane:
+  icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/vaultwarden.svg
+  urls:
+    - https://github.com/dani-garcia/vaultwarden
+
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    restart: unless-stopped
+    env_file: ".env"
+    user: 568:568
+    volumes:
+      - /mnt/goFlash/docker/vaultwarden/:/data/
+    ports:
+      - 8113:80
+    labels:
+      com.getarcaneapp.arcane.icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/vaultwarden.svg

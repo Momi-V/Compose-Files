@@ -1,0 +1,16 @@
+services:
+  ddclient:
+    image: lscr.io/linuxserver/ddclient:latest
+    container_name: ddclient
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=Europe/Berlin
+    volumes:
+      - /mnt/bigSpin/net/Desktop/scripts/:/config/
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+          memory: 1G

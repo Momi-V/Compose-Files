@@ -1,0 +1,31 @@
+services:
+  qbittorrent-wireguard:
+    cap_add:
+      - "NET_ADMIN"
+    container_name: "qbittorrent-wireguard"
+    entrypoint:
+      - "/bin/bash"
+      - "/start.sh"
+    environment:
+      - "PUID=568"
+      - "PGID=568"
+      - "TZ=Europe/Berlin"
+      - "LAN_NETWORK=10.11.1.0/24"
+      - "QBT_LEGAL_NOTICE=confirm"
+    image: "docker.io/tenseiken/qbittorrent-wireguard:latest"
+    ipc: "private"
+    ports:
+      - "30024:8080"
+    restart: "unless-stopped"
+    security_opt:
+      - "label=disable"
+    stdin_open: true
+    sysctls:
+      - "net.ipv4.conf.all.rp_filter=2"
+      - "net.ipv4.conf.all.src_valid_mark=1"
+      - "net.ipv6.conf.all.disable_ipv6=0"
+    tty: true
+    volumes:
+      - "/mnt/bigSpin/net/ROM:/downloads"
+      - "/mnt/goFlash/docker/qbittorrent:/config"
+    working_dir: "/opt"

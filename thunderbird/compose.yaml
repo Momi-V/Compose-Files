@@ -1,0 +1,16 @@
+services:
+  thunderbird:
+    image: jlesage/thunderbird
+    env_file: .env
+    restart: unless-stopped
+    devices:
+      - /dev/dri:/dev/dri
+    ports:
+      - "5800:5800"
+    volumes:
+      - "/mnt/goFlash/docker/thunderbird:/config:rw"
+    deploy:
+      resources:
+        limits:
+          cpus: 4
+          memory: 4G

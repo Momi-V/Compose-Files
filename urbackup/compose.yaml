@@ -18,7 +18,5 @@ services:
     privileged: true
     restart: unless-stopped
     volumes:
-      - database:/var/urbackup
       - /mnt/bigSpin/UrBackup/backups:/backups
-volumes:
-  database:
+      - /mnt/bigSpin/UrBackup/database:/var/urbackup

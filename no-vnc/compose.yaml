@@ -5,6 +5,11 @@ services:
     ports:
       - 6080:6080
     environment:
-      - SERVER=localhost:5900
+      - SERVER=truenas.lan:5900
       - TZ=Europe/Berlin
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+          memory: 1G

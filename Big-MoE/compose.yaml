@@ -1,0 +1,19 @@
+services:
+  bigmoe:
+    build: .
+    container_name: bigmoe
+    ports:
+      - "8765:8765"
+    group_add:
+      - video
+    environment:
+      - TZ=Europe/Berlin
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    volumes:
+      - /home/momi/local-ext/bigmoe:/root/bmoe
+    restart: unless-stopped
+    healthcheck:
+      disable: true
+    entrypoint: sleep infinity

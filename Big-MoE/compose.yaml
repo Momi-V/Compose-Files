@@ -9,11 +9,10 @@ services:
     environment:
       - TZ=Europe/Berlin
     devices:
-      - /dev/kfd
       - /dev/dri
     volumes:
-      - /home/momi/local-ext/bigmoe:/root/bmoe
+      - /mnt/hiSpeed/bigmoe:/root/bmoe
     restart: unless-stopped
     healthcheck:
       disable: true
-    entrypoint: sleep infinity
+    entrypoint: /root/start.sh

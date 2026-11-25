@@ -1,0 +1,48 @@
+services:
+  npmplus:
+    image: ghcr.io/zoeyvid/npmplus:latest
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+    cap_drop:
+      - ALL
+    environment:
+      ACME_PROFILE: none
+      AUTH_REQUEST_TINYAUTH_UPSTREAM: http://truenas.lan:30310
+      UID: '568'
+      GID: '568'
+      HTTP_PORT: '80'
+      HTTPS_PORT: '443'
+      NPM_PORT: '30360'
+      PGID: '568'
+      PUID: '568'
+      TZ: Europe/Berlin
+    group_add:
+      - 568
+    ports:
+      - 80:80
+      - 443:443
+      - 443:443/udp
+      - 30360:30360
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges=true
+    volumes:
+      - /mnt/goFlash/docker/npm-plus:/data
+    healthcheck:
+      interval: 30s
+      retries: 5
+      start_interval: 2s
+      start_period: 15s
+      test:
+        - CMD
+        - healthcheck.sh
+      timeout: 5s
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 4096M

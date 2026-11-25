@@ -8,52 +8,17 @@ services:
     volumes:
       - /mnt/bigSpin/net/Desktop/ollama-local:/root/.ollama
     devices:
-      - "/dev/dri:/dev/dri"
+      - "/dev/dri:/dev/dri"   # Vulkan device access (Intel/AMD)
     environment:
       # To prevent slowdown on systems without ReBAR
       - GGML_VK_DISABLE_HOST_VISIBLE_VIDMEM=1
       # Improve VRAM usage with large KV
       - OLLAMA_FLASH_ATTENTION=1
-      - LLAMA_ARG_KV_OFFLOAD=disabled
+      # - LLAMA_ARG_KV_OFFLOAD=disabled
       # KV Cache quantization (reduces quality)
       # - OLLAMA_KV_CACHE_TYPE=q8_0
     networks:
       - openwebui
-
-  open-webui:
-    image: ghcr.io/open-webui/open-webui:latest
-    container_name: open-webui
-    restart: unless-stopped
-    depends_on:
-      - ollama
-      - terminals
-    ports:
-      - "3000:8080"
-    environment:
-      - OLLAMA_BASE_URL=http://ollama:11434
-      - WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY}
-    volumes:
-      - /mnt/goFlash/docker/ollama/open-webui:/app/backend/data
-    networks:
-      - openwebui
-
-  terminals:
-    image: ghcr.io/open-webui/terminals:latest
-    container_name: terminals
-    restart: unless-stopped
-    environment:
-      - TERMINALS_BACKEND=docker
-      - TERMINALS_API_KEY=${TERMINALS_API_KEY}
-      - TERMINALS_DOCKER_NETWORK=openwebui
-      - TERMINALS_DATABASE_URL=sqlite+aiosqlite:////app/data/terminals.db
-      - TERMINALS_DOCKER_DATA_DIR=/mnt/goFlash/docker/ollama/terminals-data/terminals
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /mnt/goFlash/docker/ollama/terminals-data:/app/data
-    networks:
-      - openwebui
-    ports:
-      - "3001:3000"
 
 networks:
   openwebui:
